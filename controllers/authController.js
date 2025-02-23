@@ -5,18 +5,18 @@ const authController = {
   // Connexion d'un utilisateur
   signIn: async (req, res) => {
     
-      const { usernameOrEmail, motdepasse } = req.body;
+      const { username ,email, motdepasse } = req.body;
   
       try {
-          // Vérifier si les champs sont fournis
-          if (!usernameOrEmail || !motdepasse) {
+          // Vérifier si les champs sont fournis 
+          if (!username && !email || !motdepasse) {
               return res.status(400).json({ message: "Username or email and password are required!" });
           }
-          
+          const identifier = username || email;
           // Vérifier si l'utilisateur existe
           const user = await pool.query(
               'SELECT * FROM utilisateur WHERE username = $1 OR email = $1',
-              [usernameOrEmail]
+              [identifier]
           );
   
                // Comparer le mot de passe avec bcrypt
